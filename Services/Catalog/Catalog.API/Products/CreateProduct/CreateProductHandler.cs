@@ -46,6 +46,7 @@ internal class CreateProductCommandHandler : ICommandHandler<CreateProductComman
 
         //await _productRepository.AddProductAsync(product, cancellationToken);
 
-        throw new NotImplementedException();
+        //return new CreateProductResult(product.Id);
+        return new CreateProductResult(new Guid());
     }
 }
