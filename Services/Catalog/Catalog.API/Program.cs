@@ -1,3 +1,5 @@
+using Catalog.API.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Services to the container.
@@ -19,6 +21,15 @@ builder.Services.AddMarten(options =>
     options.Connection(builder.Configuration.GetConnectionString("DefaultConnection")!);
 }).UseLightweightSessions();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
+
+    //builder.Services.AddSwaggerGen(c =>
+    //{
+    //    c.SwaggerDoc("v1", new() { Title = "Catalog.API", Version = "v1" });
+    //});
+}
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
