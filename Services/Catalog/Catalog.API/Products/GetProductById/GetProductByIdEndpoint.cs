@@ -9,20 +9,13 @@ public class GetProductByIdEndpoint : ICarterModule
     {
         app.MapGet("/products/{id}", async (Guid id, ISender sender) =>
         {
-            try
-            {
-                //var query = request.Adapt<GetProductByIdQuery>();
-                var query = new GetProductByIdQuery(id);
-                var result = await sender.Send(query, default);
+            //var query = request.Adapt<GetProductByIdQuery>();
+            var query = new GetProductByIdQuery(id);
+            var result = await sender.Send(query, default);
 
-                var response = result.Adapt<GetProductByIdResponse>();
+            var response = result.Adapt<GetProductByIdResponse>();
 
-                return Results.Ok(response);
-            }
-            catch (ProductNotFoundException)
-            {
-                return Results.NotFound();
-            }
+            return Results.Ok(response);
         }).WithName("GetProductById")
         .Produces<GetProductByIdResponse>(StatusCodes.Status200OK)
         .ProducesProblem(statusCode: StatusCodes.Status404NotFound)

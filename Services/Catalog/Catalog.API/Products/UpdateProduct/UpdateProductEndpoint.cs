@@ -10,24 +10,13 @@ public class UpdateProductEndpoint : ICarterModule
     {
         app.MapPut("/products", async (UpdateProductRequest request, ISender sender, CancellationToken cancellationToken) =>
         {
-            try
-            {
-                var command = request.Adapt<UpdateProductCommand>();
-                var result = await sender.Send(command, cancellationToken);
+            var command = request.Adapt<UpdateProductCommand>();
+            var result = await sender.Send(command, cancellationToken);
 
-                var response = result.Adapt<UpdateProductResponse>();
+            var response = result.Adapt<UpdateProductResponse>();
 
-                return Results.Ok(response);
-            }
-            catch (ProductNotFoundException ex)
-            {
-                return Results.NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return Results.BadRequest("Something went wrong.");
-                //return Results.Problem(ex.Message, StatusCodes.Status400BadRequest);
-            }
+            return Results.Ok(response);
+
         }).WithName("UpdateProduct")
         .Produces<UpdateProductResponse>(StatusCodes.Status200OK)
         .ProducesProblem(statusCode: StatusCodes.Status404NotFound)

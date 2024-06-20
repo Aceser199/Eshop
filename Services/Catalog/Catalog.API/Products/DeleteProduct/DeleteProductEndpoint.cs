@@ -8,24 +8,12 @@ public class DeleteProductEndpoint : ICarterModule
     {
         app.MapDelete("/products/{id}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
         {
-            try
-            {
-                var command = new DeleteProductCommand(id);
-                var result = await sender.Send(command, cancellationToken);
+            var command = new DeleteProductCommand(id);
+            var result = await sender.Send(command, cancellationToken);
 
-                var response = result.Adapt<DeleteProductResponse>();
+            var response = result.Adapt<DeleteProductResponse>();
 
-                return Results.Ok(response);
-            }
-            catch (ProductNotFoundException ex)
-            {
-                return Results.NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return Results.BadRequest("Something went wrong.");
-                //return Results.Problem(ex.Message, StatusCodes.Status400BadRequest);
-            }
+            return Results.Ok(response);
         }).WithName("DeleteProduct")
         .Produces<DeleteProductResponse>(StatusCodes.Status200OK)
         .ProducesProblem(statusCode: StatusCodes.Status404NotFound)
