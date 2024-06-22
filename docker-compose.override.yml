@@ -7,10 +7,23 @@ services:
       - POSTGRES_DB=CatalogDb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    restart: always
     ports:
       - "5432:5432"
     volumes:
       - postgres_catalog:/var/lib/postgresql/data/    
+
+  basketdb:
+    container_name: basketdb
+    environment:
+      - POSTGRES_DB=BasketDb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_basket:/var/lib/postgresql/data/ 
 
   catalog.api:
     environment:
@@ -26,3 +39,5 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+
