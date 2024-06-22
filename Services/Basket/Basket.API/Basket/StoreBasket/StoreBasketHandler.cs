@@ -23,10 +23,9 @@ public class StoreBasketCommandHandler : ICommandHandler<StoreBasketCommand, Sto
 
     public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
-        //var basket = await _repository.UpdateBasketAsync(command.Cart);
-        //return new StoreBasketResult(basket);
+        ShoppingCart cart = command.Cart;
 
-        // TOdo : Implement the logic to update the basket from the repository
-        return new StoreBasketResult("swn");
+        await _repository.StoreBasketAsync(cart, cancellationToken);
+        return new StoreBasketResult(cart.UserName);
     }
 }
